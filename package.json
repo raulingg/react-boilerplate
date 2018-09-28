@@ -1,0 +1,80 @@
+{
+  "name": "vote-peru",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Raul Quispe M. <relaxedchild@gmail.com> (raulingg)",
+  "license": "MIT",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server --open --mode development --hot",
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "test": "cross-env NODE_ENV=testing jest --config=jest.config.json",
+    "heroku-postbuild": "yarn run build",
+    "precommit": "lint-staged",
+    "commit": "git-cz"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,sass}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
+    "dotenv": "^6.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "firebase": "^5.5.2",
+    "history": "^4.7.2",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.3",
+    "moment": "^2.22.2",
+    "node-sass": "^4.9.3",
+    "normalize.css": "^8.0.0",
+    "react": "^16.5.2",
+    "react-dates": "^18.1.0",
+    "react-dom": "^16.5.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "uuid": "^3.3.2",
+    "webpack": "^4.20.2"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "enzyme": "^3.6.0",
+    "enzyme-to-json": "^3.3.4",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.7.0",
+    "eslint-plugin-react": "^7.11.1",
+    "hasky": "^3.0.2",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
