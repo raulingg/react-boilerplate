@@ -1,16 +1,12 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DotEnv = require('dotenv');
+const webpack = require('webpack');
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-if (process.env.NODE_ENV === 'testing') {
-  DotEnv.config({ path: '.env.testing' });
-}
+DotEnv.config({ path: '.env' });
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -27,11 +23,26 @@ const MiniCssPlugin = new MiniCssExtractPlugin({
 module.exports = {
   optimization: {
     nodeEnv: process.env.NODE_ENV,
+    splitChunks: {
+      // include all types of chunks
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
   entry: ['babel-polyfill', './src/app.js'],
   output: {
     path: path.join(__dirname, 'public', 'dist'),
-    filename: 'bundle.js',
+    filename: isProduction ? 'bundle.[hash].js' : 'bundle.js',
   },
   module: {
     rules: [
@@ -65,22 +76,26 @@ module.exports = {
     ],
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     HtmlPlugin,
-    new CleanWebpackPlugin(['public/dist']),
+    new CleanWebpackPlugin(['dist']),
     MiniCssPlugin,
     new webpack.DefinePlugin({
-      FIREBASE_API_KEY: JSON.stringify(process.env.FIREBASE_API_KEY),
-      FIREBASE_AUTH_DOMAIN: JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
-      FIREBASE_DATABASE_URL: JSON.stringify(process.env.FIREBASE_DATABASE_URL),
-      FIREBASE_PROJECT_ID: JSON.stringify(process.env.FIREBASE_PROJECT_ID),
-      FIREBASE_STORAGE_BUCKET: JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
-      FIREBASE_MESSAGING_SENDER_ID: JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
+      'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+      'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
+      'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
+      'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
+      'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
+      'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(
+        process.env.FIREBASE_MESSAGING_SENDER_ID
+      ),
     }),
   ],
   devtool: isProduction ? 'source-map' : 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'public'),
+    compress: true,
     historyApiFallback: true,
-    publicPath: './',
+    publicPath: '/',
   },
 };

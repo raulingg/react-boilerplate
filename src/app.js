@@ -1,7 +1,7 @@
-import { auth } from 'firebase';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { auth } from './firebase/firebase';
 import AppRouter, { history } from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import { login, logout } from './actions/auth';
@@ -26,7 +26,7 @@ const renderApp = () => {
 
 ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
-auth().onAuthStateChanged(user => {
+auth.onAuthStateChanged(user => {
   if (user) {
     store.dispatch(login(user.uid));
     renderApp();
