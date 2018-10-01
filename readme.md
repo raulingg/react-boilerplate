@@ -82,7 +82,7 @@ $ cp .env.testing .env.example
 
 next add your envars to the .env.testing file
 
-> Remember: This envars are only for testing purpose.
+> Remember: These envars are only for testing purposes.
 
 **Running tests**
 
