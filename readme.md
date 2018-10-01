@@ -31,7 +31,26 @@ In addition it adds some helpful tools in order to improve your code and make ea
 - [Jest](https://jestjs.io/)
 - [Enzyme](https://github.com/airbnb/enzyme)
 
-## Install and run
+## Configuration
+
+Generate your .env file by running the following command:
+
+```
+$ cp .env .env.example
+```
+
+next add your firebase envars and others in the .env file
+
+```
+FIREBASE_API_KEY={YOUR_API_KEY}
+FIREBASE_AUTH_DOMAIN=={YOUR_AUTH_DOMAIN}
+FIREBASE_DATABASE_URL={OUR_DATABASE_URL}
+FIREBASE_PROJECT_ID={YOUR_PROJECT_ID}
+FIREBASE_STORAGE_BUCKET={YOUR_STORAGE_BUCKET}
+FIREBASE_MESSAGING_SENDER_ID={YOUR_MESSAGING_SENDER_ID}
+```
+
+## Installation and running
 
 **In Development environment**
 
@@ -51,10 +70,30 @@ $ yarn
 $ yarn build
 ```
 
-## Test
+## Testing
+
+**Configuration**
+
+Generate your .env.testing file in order to test by running the following command:
+
+```
+$ cp .env.testing .env.example
+```
+
+next add your envars to the .env.testing file
+
+> Remember: This envars are only for testing purpose.
+
+**Running tests**
 
 Run the following command in your terminal:
 
 ```
 $ yarn test
+```
+
+or
+
+```
+$ yarn test -- --watch
 ```

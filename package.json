@@ -1,5 +1,5 @@
 {
-  "name": "vote-peru",
+  "name": "react-16-boilerplate",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Raul Quispe M. <relaxedchild@gmail.com> (raulingg)",
@@ -8,7 +8,6 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --open --mode development --hot",
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "test": "cross-env NODE_ENV=testing jest --config=jest.config.js",
-    "heroku-postbuild": "yarn run build",
     "precommit": "lint-staged",
     "commit": "git-cz"
   },
@@ -71,6 +70,7 @@
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",
     "react-test-renderer": "^16.5.2",
+    "redux-mock-store": "^1.5.3",
     "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.8"

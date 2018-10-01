@@ -2,23 +2,12 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DotEnv = require('dotenv');
 const webpack = require('webpack');
 
 DotEnv.config({ path: '.env' });
 
 const isProduction = process.env.NODE_ENV === 'production';
-
-const HtmlPlugin = new HtmlWebPackPlugin({
-  template: './src/index.html',
-  filename: '../index.html',
-});
-
-const MiniCssPlugin = new MiniCssExtractPlugin({
-  filename: isProduction ? '[name].[hash].css' : '[name].css',
-  chunkFilename: isProduction ? '[id].[hash].css' : '[id].css',
-});
 
 module.exports = {
   optimization: {
@@ -41,7 +30,7 @@ module.exports = {
   },
   entry: ['babel-polyfill', './src/app.js'],
   output: {
-    path: path.join(__dirname, 'public', 'dist'),
+    path: path.resolve(__dirname, isProduction ? 'public/dist' : 'public'),
     filename: isProduction ? 'bundle.[hash].js' : 'bundle.js',
   },
   module: {
@@ -76,10 +65,15 @@ module.exports = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
-    HtmlPlugin,
-    new CleanWebpackPlugin(['dist']),
-    MiniCssPlugin,
+    new CleanWebpackPlugin(['dist', 'index.html']),
+    new HtmlWebPackPlugin({
+      template: './src/index.html',
+      filename: isProduction ? '../index.html' : 'index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: isProduction ? '[name].[hash].css' : '[name].css',
+      chunkFilename: isProduction ? '[id].[hash].css' : '[id].css',
+    }),
     new webpack.DefinePlugin({
       'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
       'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
@@ -96,6 +90,5 @@ module.exports = {
     contentBase: path.join(__dirname, 'public'),
     compress: true,
     historyApiFallback: true,
-    publicPath: '/',
   },
 };
